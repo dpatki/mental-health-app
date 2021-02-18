@@ -8,7 +8,10 @@ const config = require('./config');
 const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 64b9e7b5c35018345cee2e8c7aa2ec812456630b
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
