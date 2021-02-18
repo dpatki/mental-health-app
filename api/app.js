@@ -8,14 +8,19 @@ const config = require('./config');
 const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 64b9e7b5c35018345cee2e8c7aa2ec812456630b
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+MongoClient.connect(`mongodb://${config.dbhost}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(client => {
+  constdb = client.db(config.dbName);
+  const collection = db.collection(config.dbCollection);
+  app.locals[config.dbCollection] = collection;
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +31,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
+app.use((req, res, next) => {
+  const collection = req.app.locals[config.dbCollection];
+  req.collection = collection;
+  next();
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
